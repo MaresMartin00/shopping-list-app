@@ -36,13 +36,13 @@ nav {
   
   .nav-list ul {
     margin-right: auto;
-    padding: 0; /* Přidané pro odstranění výchozího odsazení seznamu */
+    padding: 0;
   }
   
   .nav-list li {
     display: inline-block;
     margin-left: 10px;
-    position: relative; /* Přidané pro pozicionování relativně k rodiči */
+    position: relative;
   }
   
   .nav-list a {
@@ -52,7 +52,6 @@ nav {
     padding: 10px; 
   }
   
-  /* Přidané pro drop-down menu */
   .nav-list ul ul {
     position: absolute;
     top: 100%;
@@ -108,7 +107,6 @@ nav {
       padding: 10px 5px;
     }
   
-    /*Classy pro použití v reactu */
     .hide {
       height: 0px;
       overflow: hidden;
@@ -117,8 +115,5 @@ nav {
   
     .show {
       height: 150px;
-      /*transition: all 0.1s linear;*/
-      /* background-color: #141414;
-      width: 100%; */
     }
   }

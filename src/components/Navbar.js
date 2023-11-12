@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import './Navbar.css';
-import UserDropdown from './UserDropdown'; // Importujte UserDropdown komponentu
+import UserDropdown from './UserDropdown';
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
