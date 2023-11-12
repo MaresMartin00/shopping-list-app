@@ -104,3 +104,7 @@
   cursor: pointer;
   color: #e74c3c;
 }
+
+.list-name {
+  color: black !important;
+}

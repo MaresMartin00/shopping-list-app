@@ -17,4 +17,4 @@ const ShoppingLists = () => {
   );
 };
 
-export default ShoppingLists;
+export default ShoppingLists

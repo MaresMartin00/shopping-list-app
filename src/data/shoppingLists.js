@@ -73,4 +73,4 @@ const shoppingLists = [
     }
   ];
   
-  export default shoppingLists;
+  export default shoppingLists

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AiFillEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im"
@@ -80,7 +80,7 @@ const ListDetail = () => {
         </div>
       ) : (
         <div className="header">
-          <h2>
+          <h2 className="list-name">
             {shoppingList.name}
             <AiFillEdit onClick={() => setEditMode(true)} className="edit-icon" />
           </h2>
