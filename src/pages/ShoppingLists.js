@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import ShoppingListTile from "../components/ShoppingListTile";
 import shoppingListsData from "../data/shoppingLists";
 import "./ShoppingLists.css";
+import { AiOutlinePlus } from "react-icons/ai";
 
 const ShoppingLists = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -41,18 +42,19 @@ const ShoppingLists = () => {
     closeModal();
   };
 
-  // Filter out archived lists before rendering
   const activeShoppingLists = shoppingListsData.filter((list) => !list.archived);
 
   return (
     <div className="shopping-lists">
-      <button onClick={openModal}>Add New List</button>
-
       {activeShoppingLists.map((list) => (
         <ShoppingListTile key={list.id} list={list} />
       ))}
 
-      <Modal
+      <button className="add-list-button" onClick={openModal}>
+        <AiOutlinePlus /> Add
+      </button>
+
+      <Modal className="ModalContent"
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Add Shopping List"
