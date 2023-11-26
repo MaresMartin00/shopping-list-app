@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AiFillEdit } from "react-icons/ai";
-import { ImCross } from "react-icons/im"
+import { ImCross } from "react-icons/im";
 import shoppingListsData from "../data/shoppingLists";
 import itemsData from "../data/items";
 import "./ListDetail.css";
@@ -54,10 +54,20 @@ const ListDetail = () => {
 
   const handleDeleteList = () => {
     const listIndex = shoppingListsData.findIndex((list) => list.id === parseInt(id, 10));
-    if (listIndex !== -1) {
+
+    const listName = shoppingList.name;
+
+    const Delete = window.confirm(`Opravdu si přejete smazat "${listName}"?`);
+
+    if (Delete && listIndex !== -1) {
       shoppingListsData.splice(listIndex, 1);
       navigate("/ShoppingLists");
     }
+  };
+
+  const handleArchiveList = () => {
+    shoppingList.archived = true;
+    navigate("/Archived");
   };
 
   return (
@@ -95,7 +105,6 @@ const ListDetail = () => {
       {showMembers && (
         <div>
           <ul>
-            
             {shoppingList.members.map((memberId) => (
               <li key={memberId}>{`Uživatel ${memberId}`}</li>
             ))}
@@ -131,7 +140,7 @@ const ListDetail = () => {
 
       <div className="buttons">
         <button onClick={() => setShowAddForm(!showAddForm)}>Přidat položku</button>
-        <button>Archivovat</button>
+        <button onClick={handleArchiveList}>Archivovat</button>
         <button onClick={handleDeleteList} className="delete-button">
           Smazat seznam
         </button>
