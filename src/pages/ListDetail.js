@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AiFillEdit } from "react-icons/ai";
 import { ImCross } from "react-icons/im";
-import shoppingListsData from "../data/shoppingLists";
-import itemsData from "../data/items";
+import { fetchData } from "../api";  // Import fetchData function
 import "./ListDetail.css";
 
 const ListDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [items, setItems] = useState(itemsData);
+  const [data, setData] = useState({ users: [], shoppingLists: [], items: [] });
+  const [items, setItems] = useState([]);
   const [showResolved, setShowResolved] = useState(true);
   const [showMembers, setShowMembers] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -17,7 +17,21 @@ const ListDetail = () => {
   const [editMode, setEditMode] = useState(false);
   const [editedListName, setEditedListName] = useState("");
 
-  const shoppingList = shoppingListsData.find((list) => list.id === parseInt(id, 10));
+  useEffect(() => {
+    const fetchDataFromApi = async () => {
+      try {
+        const result = await fetchData();
+        setData(result);
+        setItems(result.items);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchDataFromApi();
+  }, []);
+
+  const shoppingList = data.shoppingLists.find((list) => list.id === parseInt(id, 10));
 
   if (!shoppingList) {
     return <div className="list-detail">Shopping list not found.</div>;
@@ -52,18 +66,36 @@ const ListDetail = () => {
     }
   };
 
-  const handleDeleteList = () => {
-    const listIndex = shoppingListsData.findIndex((list) => list.id === parseInt(id, 10));
+  const handleDeleteList = async () => {
+  const listIndex = data.shoppingLists.findIndex((list) => list.id === parseInt(id, 10));
 
-    const listName = shoppingList.name;
+  const listName = shoppingList.name;
 
-    const Delete = window.confirm(`Opravdu si přejete smazat "${listName}"?`);
+  const Delete = window.confirm(`Opravdu si přejete smazat "${listName}"?`);
 
-    if (Delete && listIndex !== -1) {
-      shoppingListsData.splice(listIndex, 1);
+  if (Delete && listIndex !== -1) {
+    try {
+      // Vytáhněte aktuální data
+      const currentData = await fetchData();
+
+      // Vytvořte kopii seznamů a odeberte ten, který chcete smazat
+      const updatedShoppingLists = currentData.shoppingLists.filter((list) => list.id !== parseInt(id, 10));
+
+      // Aktualizujte data a provede navigaci
+      setData((prevData) => {
+        const updatedData = {
+          ...prevData,
+          shoppingLists: updatedShoppingLists
+        };
+        return updatedData;
+      });
+
       navigate("/ShoppingLists");
+    } catch (error) {
+      console.error("Error deleting list:", error);
     }
-  };
+  }
+};
 
   const handleArchiveList = () => {
     shoppingList.archived = true;

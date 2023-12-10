@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import ShoppingListTile from "../components/ShoppingListTile";
-import shoppingListsData from "../data/shoppingLists";
+//import shoppingListsData from "../data/shoppingLists";
 import "./ShoppingLists.css";
 import { AiOutlinePlus } from "react-icons/ai";
+import { fetchData } from "../api";
 
 const ShoppingLists = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newListName, setNewListName] = useState("");
+  const [data, setData] = useState({ users: [], shoppingLists: [], items: [] });
+
+  useEffect(() => {
+    const fetchDataFromApi = async () => {
+      const result = await fetchData();
+      setData(result);
+    };
+
+    fetchDataFromApi();
+  }, []);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -37,12 +48,15 @@ const ShoppingLists = () => {
       items: [],
     };
 
-    shoppingListsData.push(newShoppingList);
+    setData(prevData => ({
+      ...prevData,
+      shoppingLists: [...prevData.shoppingLists, newShoppingList],
+    }));
 
     closeModal();
   };
 
-  const activeShoppingLists = shoppingListsData.filter((list) => !list.archived);
+  const activeShoppingLists = data.shoppingLists.filter((list) => !list.archived);
 
   return (
     <div className="shopping-lists">

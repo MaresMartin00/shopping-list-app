@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ShoppingListTile from "../components/ShoppingListTile";
-import shoppingListsData from "../data/shoppingLists";
+import { fetchData } from "../api";
 import "./Archived.css";
 
 const Archived = () => {
-  const archivedLists = shoppingListsData.filter((list) => list.archived);
+  const [archivedLists, setArchivedLists] = useState([]);
+
+  useEffect(() => {
+    const fetchArchivedLists = async () => {
+      try {
+        const result = await fetchData();
+        const archivedListsData = result.shoppingLists.filter((list) => list.archived);
+        setArchivedLists(archivedListsData);
+      } catch (error) {
+        console.error("Error fetching archived lists:", error);
+      }
+    };
+
+    fetchArchivedLists();
+  }, []);
 
   return (
     <div className="archived-container">
